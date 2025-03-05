@@ -1,37 +1,39 @@
-# Visualización de Premios Nobel
 
-[![Node.js](https://img.shields.io/badge/Node.js-v14.0+-green.svg)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/cloud/atlas)
-[![Chart.js](https://img.shields.io/badge/Chart.js-v3.7.1-blue.svg)](https://www.chartjs.org/)
 
-Aplicación web para visualizar estadísticas sobre los ganadores del Premio Nobel utilizando una API pública, MongoDB y Chart.js.
+# 🎖️ Visualización de Premios Nobel  
 
-![Vista previa de la aplicación](https://via.placeholder.com/800x400?text=Vista+Previa+Nobel+Prizes)
+[![Node.js](https://img.shields.io/badge/Node.js-v14.0%2B-green.svg)](https://nodejs.org/)  
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/cloud/atlas)  
+[![Chart.js](https://img.shields.io/badge/Chart.js-v3.7.1-blue.svg)](https://www.chartjs.org/)  
 
-## Características
+Aplicación web para visualizar estadísticas sobre los ganadores del Premio Nobel, utilizando una API pública, MongoDB y Chart.js.  
 
-- **Obtención de datos**: Extrae información actualizada desde la API oficial Nobel Prize
-- **Almacenamiento en MongoDB**: Guarda los datos en una base de datos MongoDB (local o Atlas)
-- **Visualizaciones interactivas**:
-  - Distribución de Premios Nobel por categoría (gráfico circular)
-  - Top 10 países con más Premios Nobel (gráfico de barras)
-  - Evolución de Premios Nobel por década (gráfico de línea)
-- **Interfaz responsive**: Adaptable a diferentes tamaños de pantalla
+![Vista previa de la aplicación](https://via.placeholder.com/800x400?text=Vista+Previa+Nobel+Prizes)  
 
-## Requisitos previos
+## ✨ Características  
 
-- [Node.js](https://nodejs.org/) (v14 o superior)
-- Cuenta en [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) o MongoDB instalado localmente
-- Navegador web moderno
+✅ **Obtención de datos**: Extrae información actualizada desde la API oficial de Premios Nobel.  
+✅ **Almacenamiento en MongoDB**: Guarda los datos en una base de datos MongoDB (local o Atlas).  
+✅ **Visualizaciones interactivas**:  
+   - 📊 Distribución de Premios Nobel por categoría (gráfico circular).  
+   - 🌍 Top 10 países con más Premios Nobel (gráfico de barras).  
+   - 📈 Evolución de Premios Nobel por década (gráfico de línea).  
+✅ **Interfaz responsive**: Adaptable a diferentes tamaños de pantalla.  
 
-## Estructura del proyecto
+## ⚙️ Requisitos previos  
 
-```
+📌 [Node.js](https://nodejs.org/) (v14 o superior).  
+📌 Cuenta en [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) o instalación local de MongoDB.  
+📌 Un navegador web moderno.  
+
+## 📂 Estructura del proyecto  
+
+```bash
 proyecto-nobel/
 │
 ├── app.js                   # Archivo principal con la lógica del servidor y MongoDB
 │
-├── package.json             # Configuración de dependencias 
+├── package.json             # Configuración de dependencias
 │
 ├── node_modules/            # Carpeta generada al instalar dependencias (no incluida en el repositorio)
 │
@@ -39,24 +41,24 @@ proyecto-nobel/
     └── index.html           # Página web con las visualizaciones
 ```
 
-## Instalación
+## 🚀 Instalación  
 
-1. Clona este repositorio o descarga los archivos:
+1️⃣ **Clonar el repositorio**  
 
 ```bash
 git clone https://github.com/tu-usuario/visualizacion-nobel.git
 cd visualizacion-nobel
 ```
 
-2. Instala las dependencias:
+2️⃣ **Instalar dependencias**  
 
 ```bash
 npm install
 ```
 
-3. Configura la conexión a MongoDB:
+3️⃣ **Configurar la conexión a MongoDB**  
 
-Abre el archivo `app.js` y busca la sección de configuración de MongoDB. Modifica la URI de conexión según corresponda:
+Edita `app.js` y actualiza la URI de conexión según corresponda:  
 
 ```javascript
 // Para MongoDB Atlas
@@ -66,70 +68,65 @@ const uri = "mongodb+srv://usuario:contraseña@cluster.mongodb.net/?retryWrites=
 // const uri = "mongodb://localhost:27017";
 ```
 
-## Uso
+## ▶️ Uso  
 
-1. Inicia la aplicación:
+1️⃣ Iniciar la aplicación:  
 
 ```bash
 node app.js
 ```
 
-2. Abre tu navegador y visita:
+2️⃣ Abrir en el navegador:  
 
 ```
 http://localhost:3000
 ```
 
-La aplicación realizará automáticamente:
-- Conexión a la API de Premios Nobel
-- Obtención y procesamiento de datos
-- Almacenamiento en MongoDB
-- Visualización interactiva en el navegador
+✅ **Acciones automáticas:**  
+- Conexión a la API de Premios Nobel.  
+- Obtención y procesamiento de datos.  
+- Almacenamiento en MongoDB.  
+- Visualización interactiva en el navegador.  
 
-## API y endpoints
+## 🔌 API y endpoints  
 
-- **GET /** - Página principal con visualizaciones
-- **GET /api/nobel-data** - Endpoint que proporciona estadísticas procesadas para las gráficas
+- **GET /** → Página principal con visualizaciones.  
+- **GET /api/nobel-data** → Endpoint que proporciona estadísticas procesadas para las gráficas.  
 
-## Tecnologías utilizadas
+## 🛠️ Tecnologías utilizadas  
 
-- **Backend**:
-  - Node.js
-  - Express
-  - MongoDB (con el driver oficial de Node.js)
-  - Axios (para peticiones HTTP)
-  
-- **Frontend**:
-  - HTML5/CSS3
-  - Chart.js (para visualizaciones)
-  - JavaScript vanilla
+### 🔹 Backend  
+- Node.js  
+- Express  
+- MongoDB (driver oficial de Node.js)  
+- Axios (para peticiones HTTP)  
 
-## Personalización
+### 🔹 Frontend  
+- HTML5 / CSS3  
+- Chart.js (para visualizaciones)  
+- JavaScript vanilla  
 
-### Cambiar el estilo visual
+## 🎨 Personalización  
 
-Puedes modificar el diseño editando la sección `<style>` en el archivo `public/index.html`.
+### 🖌️ Cambiar el estilo visual  
+Edita la sección `<style>` en `public/index.html`.  
 
-### Añadir más visualizaciones
+### 📊 Añadir más visualizaciones  
+1. Agrega un nuevo contenedor en `public/index.html`.  
+2. Crea una nueva función de agregación en `app.js` dentro de `getNobelStatistics()`.  
+3. Implementa la visualización en el JavaScript de `index.html`.  
 
-1. Añade un nuevo contenedor para el gráfico en `public/index.html`
-2. Crea una nueva función de agregación en `app.js` dentro de la función `getNobelStatistics()`
-3. Añade la función de renderizado correspondiente en el JavaScript de `index.html`
+### 🔄 Cambiar la fuente de datos  
+Modifica la función `fetchNobelData()` en `app.js` para conectarla a otra API.  
 
-### Cambiar la fuente de datos
+## ❓ Resolución de problemas  
 
-Si deseas utilizar otra API, modifica la función `fetchNobelData()` en `app.js` para que se conecte a tu fuente de datos preferida.
+### 🚫 No se conecta a MongoDB  
+🔹 Verifica la URI de conexión.  
+🔹 Asegúrate de que tu IP esté permitida en MongoDB Atlas.  
+🔹 Comprueba los permisos del usuario.  
 
-## Resolución de problemas
-
-### La aplicación no se conecta a MongoDB
-
-- Verifica que la URI de conexión sea correcta
-- Asegúrate de que tu IP esté permitida en la configuración de Network Access de MongoDB Atlas
-- Comprueba que el usuario tenga permisos suficientes
-
-### No se muestran datos en las gráficas
-
-- Revisa la consola del navegador en busca de errores
-- Verifica que la API de Premios Nobel esté disponible
-- Comprueba la estructura de los datos en la colección de MongoDB
+### 🖥️ No se muestran los gráficos  
+🔹 Revisa la consola del navegador en busca de errores.  
+🔹 Confirma que la API de Premios Nobel está activa.  
+🔹 Verifica la estructura de los datos en MongoDB.  
