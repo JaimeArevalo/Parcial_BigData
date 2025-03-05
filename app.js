@@ -3,8 +3,6 @@
 // 2. Guardar los datos en MongoDB
 // 3. Crear una visualización con los datos
 
-// Requisitos:
-// npm install axios mongodb express cors
 
 const axios = require('axios');
 const { MongoClient } = require('mongodb');
