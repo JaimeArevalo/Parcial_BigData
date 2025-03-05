@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Premios Nobel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        .chart-container:hover {
+            box-shadow: 0 6px 22px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+        }
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        .chart-box {
+            flex: 1;
+            min-width: 300px;
+            height: 400px;
+            position: relative;
+        }
+        @media (max-width: 768px) {
+            .chart-row {
+                flex-direction: column;
+            }
+            .chart-box {
+                height: 350px;
+            }
+        }
+        canvas {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Análisis de Premios Nobel</h1>
+        
+        <div class="chart-container">
+            <h2>Premios Nobel por Categoría</h2>
+            <div class="chart-box">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-row">
+            <div class="chart-container">
+                <h2>Top 10 Países con más Premios Nobel</h2>
+                <div class="chart-box">
+                    <canvas id="countryChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h2>Premios Nobel por Década</h2>
+                <div class="chart-box">
+                    <canvas id="decadeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para obtener colores aleatorios
+        function getRandomColors(count) {
+            const colors = [];
+            for (let i = 0; i < count; i++) {
+                const hue = (i * 37) % 360; // Distribuir colores uniformemente en el espectro
+                colors.push(`hsl(${hue}, 70%, 60%)`);
+            }
+            return colors;
+        }
+
+        // Función para cargar los datos y crear las gráficas
+        async function loadData() {
+            try {
+                const response = await fetch('http://localhost:3000/api/nobel-data');
+                const data = await response.json();
+                
+                createCategoryChart(data.categoryCounts);
+                createCountryChart(data.countryCounts);
+                createDecadeChart(data.decadeCounts);
+            } catch (error) {
+                console.error('Error al cargar los datos:', error);
+                alert('Error al cargar los datos. Verifica que el servidor esté en funcionamiento.');
+            }
+        }
+
+        // Función para crear la gráfica de categorías
+        function createCategoryChart(data) {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            
+            // Mapear los IDs de categoría a nombres más amigables
+            const categoryNames = {
+                'physics': 'Física',
+                'chemistry': 'Química',
+                'medicine': 'Medicina',
+                'literature': 'Literatura',
+                'peace': 'Paz',
+                'economics': 'Economía'
+            };
+            
+            const labels = data.map(item => categoryNames[item._id] || item._id);
+            const values = data.map(item => item.count);
+            const colors = getRandomColors(labels.length);
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribución por Categoría',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para crear la gráfica de países
+        function createCountryChart(data) {
+            const ctx = document.getElementById('countryChart').getContext('2d');
+            
+            const labels = data.map(item => {
+                // Simplificar nombres de países muy largos
+                let country = item._id;
+                if (country.length > 25) {
+                    country = country.split(',')[0];
+                }
+                return country;
+            });
+            
+            const values = data.map(item => item.count);
+            const colors = getRandomColors(labels.length);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Número de Premios Nobel',
+                        data: values,
+                        backgroundColor: colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Número de Laureados'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'País de Nacimiento'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para crear la gráfica de décadas
+        function createDecadeChart(data) {
+            const ctx = document.getElementById('decadeChart').getContext('2d');
+            
+            // Ordenar décadas cronológicamente
+            data.sort((a, b) => {
+                const decadeA = parseInt(a._id.substring(0, 3) + '0');
+                const decadeB = parseInt(b._id.substring(0, 3) + '0');
+                return decadeA - decadeB;
+            });
+            
+            const labels = data.map(item => item._id);
+            const values = data.map(item => item.count);
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Número de Premios Nobel',
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return 'Década: ' + tooltipItems[0].label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Número de Laureados',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Década',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Cargar los datos cuando se cargue la página
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
