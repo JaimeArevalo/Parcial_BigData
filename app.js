@@ -1,4 +1,5 @@
-// Proyecto de Premios Nobel
+// PARCIAL PRIMER CORTE BIGDATA
+
 // 1. Obtener datos de la API pública de Premios Nobel
 // 2. Guardar los datos en MongoDB
 // 3. Crear una visualización con los datos
